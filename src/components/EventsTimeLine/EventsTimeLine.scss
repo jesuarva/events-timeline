@@ -1,0 +1,218 @@
+$primary: #3f51b5;
+$dark-primary: #303f9f;
+$light-primary: #c5cae9;
+$text: #ffffff;
+$primary-text: #212121;
+$secondary-text: #757575;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #eee;
+  font-family: Helvetica, sans-serif;
+}
+
+// The vertical ruler
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    background-color: $light-primary;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+  }
+}
+
+@mixin container-left {
+  left: 0;
+
+  // Add arrows
+  &::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    right: 30px;
+    border: medium solid $light-primary;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent $light-primary;
+  }
+
+  // Position circles
+  &::after {
+    right: 0px;
+    transform: translateX(50%);
+  }
+}
+
+@mixin container-right {
+  left: 50%;
+
+  // Add arrows
+  &::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    left: 30px;
+    border: medium solid $light-primary;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent $light-primary transparent transparent;
+  }
+
+  // Position circles
+  &::after {
+    left: 0px;
+    transform: translateX(-50%);
+  }
+}
+
+.container {
+  padding: 10px 50px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+
+  // The circles on the timeline
+  $circle-size: 3vw;
+  $max-circle-size: 30px;
+  &::after {
+    content: "";
+    position: absolute;
+    width: $circle-size;
+    max-width: $max-circle-size;
+    height: $circle-size;
+    max-height: $max-circle-size;
+    background-color: $primary;
+    border: 4px solid $dark-primary;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  // Place the container to the left
+  &:nth-child(odd) {
+    @include container-left;
+  }
+
+  // Place the container to the right
+  &:nth-child(even) {
+    @include container-right;
+  }
+}
+
+@mixin content-left {
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title time" "description empty";
+
+  .time {
+    grid-area: time;
+  }
+
+  h2 {
+    grid-area: title;
+  }
+
+  p {
+    grid-area: description;
+  }
+}
+
+@mixin content-right {
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "time title" "empty description";
+
+  .time {
+    grid-area: time;
+  }
+
+  h2 {
+    grid-area: title;
+  }
+
+  p {
+    grid-area: description;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-rows: auto auto;
+  column-gap: 1.5vw;
+  padding: 20px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 20px 25px -15px rgba(0, 0, 0, 0.3);
+
+  .time {
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+    border: $light-primary 1.5px solid;
+    background-color: $dark-primary;
+    border-radius: 5px;
+    padding: 0.3vw;
+    color: $text;
+  }
+
+  h2 {
+    color: $primary-text;
+  }
+
+  p {
+    color: $secondary-text;
+  }
+
+  .container:nth-child(odd) & {
+    @include content-left;
+  }
+
+  .container:nth-child(even) & {
+    @include content-right;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  $left-position: 5vw;
+
+  .timeline {
+    max-width: 95%;
+
+    // Position the timelime to the left
+    &::after {
+      left: $left-position;
+    }
+  }
+
+  .container {
+    width: 100%;
+
+    // Position all `circles` to the left
+    &:nth-child(odd),
+    &:nth-child(even) {
+      @include container-right;
+      left: $left-position;
+    }
+  }
+
+  .content {
+    .container:nth-child(odd) &,
+    .container:nth-child(even) & {
+      @include content-right;
+    }
+  }
+}
