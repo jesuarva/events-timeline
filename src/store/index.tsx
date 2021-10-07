@@ -39,7 +39,7 @@ type Dispatchers = {
 };
 
 let count = 0;
-function getMockEvent(): Event {
+export function getMockEvent(): Event {
   return {
     date: new Date().toISOString(),
     title: `Something happen - ${++count}`,
