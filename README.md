@@ -1,6 +1,20 @@
-# Getting Started with Create React App
+# Events component exercise
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## To run the App
+
+Run the following in your terminal:
+
+```bash
+yarn # install node dependencies
+
+yarn start # To run the App in dev mode.
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+Enjoy! 😊
 
 ## Available Scripts
 
